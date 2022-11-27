@@ -1,0 +1,131 @@
+---
+title: "Unit-3 Assignment"
+author: "Leelavathy.L"
+date: "2022-11-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+1.	A. Compare and contrast the following operations on a data.frame and equivalent tibble. What is different? Why might the default data frame behaviors cause you frustration?
+
+```{r}
+df <- data.frame(abc = 1, xyz = "a")
+df$x
+df[, "xyz"]
+df[, c("abc", "xyz")]
+```
+  Answer: df$x, df[, "xyz"] both give the same output as "a".
+df[, c("abc", "xyz")]- This will be the same result in a tibble.
+
+	The frustration is because in some situations a data frame will returns a different thing. Tibble will return the same thing.
+	
+b.	What option controls how many additional column names are printed at the footer of a tibble?
+  Answer: The n_extra argument determines the number of extra columns to print information at the footer of a tibble.
+
+2.	Generate the correct format string to parse each of the following dates and times:
+d1 <- "January 1, 2010"
+d2 <- "2015-Mar-07"
+d3 <- "06-Jun-2017"
+d4 <- c("August 19 (2015)", "July 1 (2015)")
+d5 <- "12/30/14" # Dec 30, 2014
+t1 <- "1705"
+t2 <- "11:15:10.12 PM"
+```{r}
+d1 <- "January 1, 2010"
+parse_date(d1, "%B %d, %Y")
+```
+```{r}
+d2 <- "2015-Mar-07"
+parse_date(d2,"%Y-%b-%d")
+```
+```{r}
+d3 <- "06-Jun-2017"
+parse_date(d3,"%d-%b-%Y")
+```
+```{r}
+d4 <- c("August 19 (2015)", "July 1 (2015)")
+parse_date(d4, "%B %d (%Y)")
+```
+```{r}
+d5 <- "12/30/14" 
+parse_date(d5, "%m/%d/%y")
+```
+```{r}
+t1 <- "1705"
+parse_time(t1,"%H%M")
+```
+```{r}
+t2 <- "11:15:10.12 PM"
+parse_time(t2, "%H:%M:%OS %p")
+```
+3.	Practice referring to non-syntactic names in the following data frame by: 
+a. Extracting the variable called 1. 
+b. Plotting a scatterplot of 1 versus 2.
+c. Creating a new column called 3, which is 2 divided by 1. 
+d. Renaming the columns to one, two, and three: 
+annoying <- tibble( 
+`1` = 1:10, 
+`2` = `1` * 2 + rnorm(length(`1`)) )
+
+```{r}
+annoying <- tibble( 
+`1` = 1:10, 
+`2` = `1` * 2 + rnorm(length(`1`)) )
+
+annoying[["1"]]
+```
+```{r}
+annoying <- tibble( 
+`1` = 1:10, 
+`2` = `1` * 2 + rnorm(length(`1`)) )
+
+ggplot(annoying, aes(x = `1`, y = `2`)) +
+  geom_point()
+
+```
+```{r}
+annoying <- tibble( 
+`1` = 1:10, 
+`2` = `1` * 2 + rnorm(length(`1`)) )
+
+mutate(annoying, `3` = `2` / `1`)
+
+```
+```{r}
+annoying <- tibble( 
+`1` = 1:10, 
+`2` = `1` * 2 + rnorm(length(`1`)) )
+
+annoying <- rename(annoying, one = `1`, two = `2`, three=`3`)
+glimpse(annoying)
+
+```
+4.	Identify what is wrong with each of the following inline CSV files. 
+What happens when you run the code? 
+  Answer:
+read_csv("a,b\n1,2,3\n4,5,6") =Warning: One or more parsing issues, call `problems()` on your dataframe
+read_csv("a,b,c\n1,2\n1,2,3,4")=Warning: One or more parsing issues, call `problems()` on your dataframe 
+read_csv("a,b\n\"1") =Warning: Delimiter: "," chr (2): a, b
+read_csv("a,b\n1,2\na,b")=Warning: Delimiter: "," chr (2): a, b
+read_csv("a;b\n1;3")==Warning: Delimiter: "," chr (2): a, b
+
+```{r}
+read_csv("a,b\n1,2,3\n4,5,6")
+```
+```{r}
+read_csv("a,b,c\n1,2\n1,2,3,4")
+```
+
+```{r}
+read_csv("a,b\n\"1")
+```
+```{r}
+read_csv("a,b\n1,2\na,b")
+```
+```{r}
+read_csv("a;b\n1;3")
+```
+
+
